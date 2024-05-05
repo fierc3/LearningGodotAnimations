@@ -7,7 +7,9 @@ extends CharacterBody3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-const LERP_VAL = 1.5
+const LERP_VAL = 0.3
+
+const camBehaviour = CameraBehaviour.Follow
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -35,15 +37,42 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "back")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
 	direction = direction.rotated(Vector3.UP, spring_arm_pivot.rotation.y)
 	
 	if direction:
-		velocity.x = lerp(velocity.x, direction.x * SPEED, 0.5)
-		velocity.z = lerp(velocity.z, direction.z * SPEED, 0.5)
-		armature.rotation.y = lerp_angle(armature.rotation.y, atan2(velocity.x, velocity.z), 0.6)
+		print("direction true")
+		velocity.x = lerp(velocity.x, direction.x * SPEED, LERP_VAL)
+		velocity.z = lerp(velocity.z, direction.z * SPEED, LERP_VAL)
+		armature.rotation.y = lerp_angle(armature.rotation.y, atan2(velocity.x, velocity.z), LERP_VAL)
 	else:
-		velocity.x = lerp(velocity.x, 0.0, 0.5)
-		velocity.z = lerp(velocity.z, 0.0, 0.5)
+		velocity.x = lerp(velocity.x, 0.0, LERP_VAL)
+		velocity.z = lerp(velocity.z, 0.0, LERP_VAL)
+	
+	if camBehaviour == CameraBehaviour.Follow:
+		updateFollowCam()
 
+
+	var forward = input_dir.y * - 1.
+	var sideward = input_dir.x
+	var runForwadMomentum = velocity.length() / SPEED * forward
+	var runSidewardsMomentum = velocity.length() / SPEED * sideward
+	print("runForwadMomentum %s" % runForwadMomentum)
+	print("runSidewardsMomentum %s" % runSidewardsMomentum)
+	var animationBlend = Vector2(runSidewardsMomentum, runForwadMomentum)
+	
 	animation_tree.set("parameters/BlendSpace1D/blend_position", velocity.length() / SPEED)
+	animation_tree.set("parameters/BlendSpace2D/blend_position", animationBlend)
+	
 	move_and_slide()
+
+func updateFollowCam():
+	print("direction false")
+	print("SpringArmRotation: %s" % spring_arm_pivot.rotation.y)		
+	var rotation = spring_arm_pivot.rotation.y + 3.14159
+	armature.rotation.y = lerp_angle(armature.rotation.y, rotation , 0.8)
+
+enum CameraBehaviour {
+	Follow,
+	Disconnected
+}

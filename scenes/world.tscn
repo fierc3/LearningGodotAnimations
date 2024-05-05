@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://do3q0n23tngpj"]
 
-[ext_resource type="PackedScene" uid="uid://c60ggjm14xcf6" path="res://scenes/soldier.tscn" id="1_c5lh5"]
+[ext_resource type="PackedScene" uid="uid://ubcpe2rfjfqj" path="res://scenes/player.tscn" id="1_x0pb1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dp6bu"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -48,8 +48,6 @@ mesh = SubResource("PlaneMesh_3yxy5")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_0ixil")
 
-[node name="Soldier" parent="." instance=ExtResource("1_c5lh5")]
-
 [node name="MidRamp" type="MeshInstance3D" parent="."]
 transform = Transform3D(5.36551, 0, 0, 0, 2.14215, 0, 0, 0, 5.36551, 6.44939, 0.894703, -1.35487)
 mesh = SubResource("PrismMesh_b5gk4")
@@ -94,3 +92,5 @@ mesh = SubResource("BoxMesh_atgf8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wg55a")
+
+[node name="Soldier" parent="." instance=ExtResource("1_x0pb1")]
