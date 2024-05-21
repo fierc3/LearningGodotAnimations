@@ -9,6 +9,20 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const LERP_VAL = 0.3
 
+#=================
+# Crouch Variables
+#=================
+const CROUCH_SPEED = 1.5
+const CROUCH_HEIGHT = 1.0 
+const CROUCH_LERP_SPEED = 0.1
+const CROUCH_COOLDOWN = 0.5
+var is_crouching = false
+var original_height = 0.0
+var crouch_height = CROUCH_HEIGHT
+var can_crouch = true
+var crouch_timer = 0.0
+#================
+
 const camBehaviour = CameraBehaviour.Follow
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -23,6 +37,12 @@ func _unhandled_input(event):
 		spring_arm.rotate_x(-event.relative.y * 0.002)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/4)
 		
+	# Crouch Handeling
+	if Input.is_action_just_pressed("crouch") and can_crouch:
+		if is_crouching:
+			stop_crouch()
+		else:
+			start_crouch()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
@@ -31,7 +51,6 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-		
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -40,10 +59,12 @@ func _physics_process(delta):
 	
 	direction = direction.rotated(Vector3.UP, spring_arm_pivot.rotation.y)
 	
+	var current_speed = CROUCH_SPEED if is_crouching else SPEED
+	
 	if direction:
 		print("direction true")
-		velocity.x = lerp(velocity.x, direction.x * SPEED, LERP_VAL)
-		velocity.z = lerp(velocity.z, direction.z * SPEED, LERP_VAL)
+		velocity.x = lerp(velocity.x, direction.x * current_speed, LERP_VAL)
+		velocity.z = lerp(velocity.z, direction.z * current_speed, LERP_VAL)
 		armature.rotation.y = lerp_angle(armature.rotation.y, atan2(velocity.x, velocity.z), LERP_VAL)
 	else:
 		velocity.x = lerp(velocity.x, 0.0, LERP_VAL)
@@ -71,6 +92,26 @@ func updateFollowCam():
 	print("SpringArmRotation: %s" % spring_arm_pivot.rotation.y)		
 	var rotation = spring_arm_pivot.rotation.y + 3.14159
 	armature.rotation.y = lerp_angle(armature.rotation.y, rotation , 0.8)
+	
+func start_crouch():
+	is_crouching = true
+	var new_transform = spring_arm_pivot.transform
+	new_transform.origin.y = -0.8
+	spring_arm_pivot.transform = new_transform
+
+	
+func stop_crouch():
+	is_crouching = false
+	var new_transform = spring_arm_pivot.transform
+	new_transform.origin.y = 0
+	spring_arm_pivot.transform = new_transform
+
+func update_crouch(delta):
+	if crouch_timer > 0:
+		crouch_timer -= delta
+	if crouch_timer <= 0:
+		can_crouch = true
+
 
 enum CameraBehaviour {
 	Follow,
