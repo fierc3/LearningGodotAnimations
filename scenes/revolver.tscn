@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://1d7mw7ewlpor"]
+
+[ext_resource type="PackedScene" uid="uid://beyrdqmbts0n3" path="res://assets/revolver/Malorian.fbx" id="1_2vaok"]
+[ext_resource type="Texture2D" uid="uid://5fjapedn5stn" path="res://assets/revolver/Textures/Malorian_Base.png" id="2_p6ska"]
+[ext_resource type="Texture2D" uid="uid://dmpama47lsvlj" path="res://assets/revolver/Textures/Malorian_Ammo.png" id="3_is2wl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rdrxb"]
+albedo_texture = ExtResource("2_p6ska")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_exctf"]
+albedo_texture = ExtResource("3_is2wl")
+
+[node name="Revolver" instance=ExtResource("1_2vaok")]
+
+[node name="Malorian" parent="RootNode" index="0"]
+layers = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_rdrxb")
+
+[node name="Malorian_001" parent="RootNode" index="1"]
+transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, -0.024802, -0.163112, 0.197429)
+layers = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_exctf")
