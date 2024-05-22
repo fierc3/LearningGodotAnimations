@@ -37,12 +37,15 @@ func _unhandled_input(event):
 		spring_arm.rotate_x(-event.relative.y * 0.002)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/4)
 		
+	if Input.is_action_just_pressed("shoot"):
+		print("Shot")
+		
 	# Crouch Handeling
 	if Input.is_action_just_pressed("crouch") and can_crouch:
-		if is_crouching:
-			stop_crouch()
-		else:
+		if !is_crouching:
 			start_crouch()
+	if Input.is_action_just_released("crouch") and is_crouching:
+		stop_crouch()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
@@ -78,8 +81,8 @@ func _physics_process(delta):
 	var sideward = input_dir.x
 	var runForwadMomentum = velocity.length() / SPEED * forward
 	var runSidewardsMomentum = velocity.length() / SPEED * sideward
-	print("runForwadMomentum %s" % runForwadMomentum)
-	print("runSidewardsMomentum %s" % runSidewardsMomentum)
+	#print("runForwadMomentum %s" % runForwadMomentum)
+	#print("runSidewardsMomentum %s" % runSidewardsMomentum)
 	var animationBlend = Vector2(runSidewardsMomentum, runForwadMomentum)
 	
 	animation_tree.set("parameters/BlendSpace1D/blend_position", velocity.length() / SPEED)
@@ -88,8 +91,8 @@ func _physics_process(delta):
 	move_and_slide()
 
 func updateFollowCam():
-	print("direction false")
-	print("SpringArmRotation: %s" % spring_arm_pivot.rotation.y)		
+	#print("direction false")
+	#print("SpringArmRotation: %s" % spring_arm_pivot.rotation.y)		
 	var rotation = spring_arm_pivot.rotation.y + 3.14159
 	armature.rotation.y = lerp_angle(armature.rotation.y, rotation , 0.8)
 	

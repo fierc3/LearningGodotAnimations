@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://cpfg7arry4lud"]
+
+[ext_resource type="PackedScene" uid="uid://di270l2f855i4" path="res://assets/fpshands3.glb" id="1_4em5v"]
+[ext_resource type="Script" path="res://scenes/fpshands.gd" id="2_u5quy"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_fwtah"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_6vf76"]
+filters = ["arms_root/gunrig/Skeleton3D:gun", "arms_root/gunrig/Skeleton3D:mag"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_scnr3"]
+animation = &"reload2"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_42o8n"]
+animation = &"reload"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xb3dn"]
+animation = &"reload"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eudtd"]
+advance_mode = 2
+advance_condition = &"shoot"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_hkym8"]
+states/Start/position = Vector2(227, 116)
+states/reload/node = SubResource("AnimationNodeAnimation_xb3dn")
+states/reload/position = Vector2(548, 174)
+transitions = ["Start", "End", SubResource("AnimationNodeStateMachineTransition_eudtd")]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_1bnu3"]
+graph_offset = Vector2(-664.497, -72.528)
+nodes/Add2/node = SubResource("AnimationNodeAdd2_6vf76")
+nodes/Add2/position = Vector2(300, 40)
+"nodes/Add2 2/node" = SubResource("AnimationNodeAdd2_fwtah")
+"nodes/Add2 2/position" = Vector2(460, -40)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_42o8n")
+nodes/Animation/position = Vector2(40, 80)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_scnr3")
+"nodes/Animation 2/position" = Vector2(60, 200)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_hkym8")
+nodes/StateMachine/position = Vector2(-300, -20)
+nodes/output/position = Vector2(680, 80)
+node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"Animation 2", &"Add2 2", 0, &"StateMachine", &"Add2 2", 1, &"Add2", &"output", 0, &"Add2 2"]
+
+[node name="fpshands3" instance=ExtResource("1_4em5v")]
+script = ExtResource("2_u5quy")
+
+[node name="Malorian_001" parent="arms_root/gunrig/Skeleton3D" index="0"]
+layers = 2
+
+[node name="Malorian" parent="arms_root/gunrig/Skeleton3D" index="1"]
+layers = 2
+
+[node name="Skeleton3D" parent="arms_root" index="1"]
+bones/0/rotation = Quaternion(0.494203, 0.505043, 0.505044, -0.495606)
+bones/1/rotation = Quaternion(-0.440056, 0.0670044, -0.0626278, 0.893274)
+bones/2/rotation = Quaternion(2.90465e-07, 1.89827e-07, -0.21631, 0.976325)
+bones/3/rotation = Quaternion(0.435828, 0.544484, 0.612102, -0.372725)
+bones/18/rotation = Quaternion(-0.494203, 0.505043, 0.505044, 0.495606)
+bones/19/rotation = Quaternion(-0.440056, -0.0670044, 0.0626278, 0.893274)
+bones/20/rotation = Quaternion(2.87841e-07, -1.92689e-07, 0.21631, 0.976325)
+bones/21/rotation = Quaternion(-0.435823, 0.544474, 0.612108, 0.372733)
+bones/22/rotation = Quaternion(-0.0687458, 0.806933, 0.512215, -0.285951)
+bones/26/rotation = Quaternion(-0.362037, 0.646104, 0.511146, -0.436129)
+bones/31/rotation = Quaternion(0.5624, -0.38648, -0.531907, 0.501413)
+
+[node name="Arms" parent="arms_root/Skeleton3D" index="0"]
+layers = 2
+
+[node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer" index="0"]
+root_node = NodePath("../..")
+tree_root = SubResource("AnimationNodeBlendTree_1bnu3")
+anim_player = NodePath("..")
+parameters/Add2/add_amount = 1.0
+"parameters/Add2 2/add_amount" = 0
+parameters/StateMachine/conditions/shoot = false
