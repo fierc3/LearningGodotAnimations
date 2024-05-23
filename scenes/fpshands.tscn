@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://cpfg7arry4lud"]
+[gd_scene load_steps=17 format=3 uid="uid://cpfg7arry4lud"]
 
 [ext_resource type="PackedScene" uid="uid://di270l2f855i4" path="res://assets/fpshands.glb" id="1_4em5v"]
 [ext_resource type="Script" path="res://scenes/fpshands.gd" id="2_u5quy"]
 [ext_resource type="AnimationLibrary" uid="uid://cyl8lndh40y20" path="res://assets/fpshands_idle.glb" id="3_kr72q"]
 [ext_resource type="Script" path="res://scenes/FpsHandAnimationTree.gd" id="4_y4q81"]
+[ext_resource type="Script" path="res://scripts/sway.gd" id="5_3nta8"]
 
 [sub_resource type="Animation" id="Animation_d6liy"]
 resource_name = "Animation"
@@ -162,7 +163,6 @@ states/reload_end/position = Vector2(549, 178)
 transitions = ["Start", "fpshands_idle_Animation", SubResource("AnimationNodeStateMachineTransition_ut4yq"), "fpshands_idle_Animation", "reload", SubResource("AnimationNodeStateMachineTransition_2ja7e"), "reload", "reload_end", SubResource("AnimationNodeStateMachineTransition_2w2cu"), "reload_end", "fpshands_idle_Animation", SubResource("AnimationNodeStateMachineTransition_vgmcl")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_1bnu3"]
-graph_offset = Vector2(-657.628, -113.38)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_hkym8")
 nodes/StateMachine/position = Vector2(-260, -60)
 nodes/output/position = Vector2(600, 0)
@@ -185,7 +185,6 @@ bones/7/rotation = Quaternion(-1.87429e-06, -1.96509e-07, 5.17815e-07, 1)
 bones/8/rotation = Quaternion(0.362039, 0.646114, 0.511141, 0.436119)
 bones/8/scale = Vector3(1, 1, 1)
 bones/9/rotation = Quaternion(-0.0940699, -0.171649, 0.0564713, 0.979029)
-bones/9/scale = Vector3(1, 1, 1)
 bones/10/rotation = Quaternion(-0.162521, 0.0123461, 0.0927087, 0.982262)
 bones/11/scale = Vector3(1, 1, 1)
 bones/12/rotation = Quaternion(-6.69714e-06, -9.6038e-06, -9.22941e-07, 1)
@@ -193,7 +192,6 @@ bones/13/rotation = Quaternion(0.562403, 0.386491, 0.5319, 0.501408)
 bones/13/scale = Vector3(1, 1, 1)
 bones/15/rotation = Quaternion(-0.120851, -0.00547991, -0.0163791, 0.99252)
 bones/16/rotation = Quaternion(-0.091275, 0.00350716, -0.00424932, 0.995811)
-bones/16/scale = Vector3(1, 1, 1)
 bones/17/rotation = Quaternion(-1.44262e-06, -3.20328e-06, -2.91696e-06, 1)
 bones/18/rotation = Quaternion(-0.548255, 0.382173, 0.601572, 0.437574)
 bones/19/rotation = Quaternion(-0.298141, -0.290975, 0.301869, 0.857508)
@@ -218,7 +216,6 @@ bones/31/position = Vector3(-0.00200215, -0.000920072, -0.00263592)
 bones/31/rotation = Quaternion(0.749534, -0.209527, -0.587893, 0.220633)
 bones/31/scale = Vector3(1, 1, 1)
 bones/32/rotation = Quaternion(-0.0511251, 0.0105305, 0.0386254, 0.99789)
-bones/32/scale = Vector3(1, 1, 1)
 bones/33/rotation = Quaternion(-0.120853, 0.00548172, 0.0163815, 0.99252)
 bones/33/scale = Vector3(1, 1, 1)
 bones/34/rotation = Quaternion(-0.0912755, -0.00350295, 0.00425489, 0.99581)
@@ -227,7 +224,11 @@ bones/34/scale = Vector3(1, 1, 1)
 [node name="Arms" parent="arms_root/Skeleton3D" index="0"]
 layers = 2
 
+[node name="Malorian" parent="gunrig" index="0"]
+transform = Transform3D(1, 3.72529e-09, 0, -3.72529e-09, 1, -4.65661e-10, 0, 4.65661e-10, 1, 0, 0, 0)
+
 [node name="Skeleton3D" parent="gunrig" index="1"]
+transform = Transform3D(1, 1.86265e-09, 0, -1.86265e-09, 1, -2.32831e-10, 0, 2.32831e-10, 1, 0, 0, 0)
 bones/0/position = Vector3(0.513106, 1.05004, 0.575028)
 bones/0/rotation = Quaternion(-1.19053e-09, 1, -1.15421e-10, 0.000872806)
 bones/0/scale = Vector3(1, 1, 1)
@@ -235,9 +236,11 @@ bones/1/rotation = Quaternion(-0.714346, -3.12898e-08, 0.0214086, 0.699465)
 bones/1/scale = Vector3(1, 1, 1)
 
 [node name="Malorian_001" parent="gunrig/Skeleton3D" index="0"]
+transform = Transform3D(1, 5.58794e-09, -1.45519e-11, -5.58794e-09, 1, -9.31323e-10, -7.27596e-12, 4.65661e-10, 1, 0, 0, 0)
 layers = 2
 
 [node name="Malorian" parent="gunrig/Skeleton3D" index="1"]
+transform = Transform3D(1, 1.86265e-09, 0, -1.86265e-09, 1, -2.32831e-10, 0, 2.32831e-10, 1, 0, 0, 0)
 layers = 2
 
 [node name="AnimationPlayer" parent="." index="2"]
@@ -252,3 +255,8 @@ tree_root = SubResource("AnimationNodeBlendTree_1bnu3")
 anim_player = NodePath("..")
 parameters/StateMachine/conditions/reload = false
 script = ExtResource("4_y4q81")
+
+[node name="Swayer" type="Node3D" parent="." index="3"]
+script = ExtResource("5_3nta8")
+swing_speed = 10.0
+correction = 0.42

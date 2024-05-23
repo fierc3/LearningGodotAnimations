@@ -23,6 +23,13 @@ var can_crouch = true
 var crouch_timer = 0.0
 #================
 
+#=================
+# Shift Variables
+#=================
+const SHIFT_MODIFIER = 0.5
+var is_shifting = false
+#================
+
 const camBehaviour = CameraBehaviour.Follow
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -46,6 +53,12 @@ func _unhandled_input(event):
 			start_crouch()
 	if Input.is_action_just_released("crouch") and is_crouching:
 		stop_crouch()
+	
+		# Crouch Handeling
+	if Input.is_action_just_pressed("shift"):
+		is_shifting = true
+	if Input.is_action_just_released("shift"):
+		is_shifting = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
@@ -63,9 +76,10 @@ func _physics_process(delta):
 	direction = direction.rotated(Vector3.UP, spring_arm_pivot.rotation.y)
 	
 	var current_speed = CROUCH_SPEED if is_crouching else SPEED
+	# slow if holding shift
+	current_speed = current_speed * SHIFT_MODIFIER if is_shifting else current_speed
 	
 	if direction:
-		print("direction true")
 		velocity.x = lerp(velocity.x, direction.x * current_speed, LERP_VAL)
 		velocity.z = lerp(velocity.z, direction.z * current_speed, LERP_VAL)
 		armature.rotation.y = lerp_angle(armature.rotation.y, atan2(velocity.x, velocity.z), LERP_VAL)
@@ -91,8 +105,6 @@ func _physics_process(delta):
 	move_and_slide()
 
 func updateFollowCam():
-	#print("direction false")
-	#print("SpringArmRotation: %s" % spring_arm_pivot.rotation.y)		
 	var rotation = spring_arm_pivot.rotation.y + 3.14159
 	armature.rotation.y = lerp_angle(armature.rotation.y, rotation , 0.8)
 	

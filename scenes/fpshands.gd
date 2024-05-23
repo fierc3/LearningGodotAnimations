@@ -5,7 +5,7 @@ extends Node3D
 @onready var anim_state_machine: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/StateMachine/playback")
 
 func _ready():
-	anim_tree.active = true
+	anim_tree.active = true	
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("reload"):
