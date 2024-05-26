@@ -14,6 +14,9 @@ var original_gun_position: Vector3
 var time: float = 0.0
 var previous_position: Vector3
 
+var arms
+var gun
+
 # Reference to the player node
 @onready var player: CharacterBody3D = get_tree().get_nodes_in_group("player")[0]
 
@@ -22,10 +25,10 @@ func _ready():
 	original_arms_position = $"../arms_root".global_transform.origin
 	original_gun_position = $"../gunrig".global_transform.origin
 	previous_position = $".".global_position
+	arms = $"../arms_root"
+	gun = $"../gunrig"
 
 func _physics_process(delta):
-	var arms = $"../arms_root"
-	var gun = $"../gunrig"
 	
 	# Update time
 	time += delta

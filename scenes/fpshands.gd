@@ -22,7 +22,7 @@ func _process(delta):
 		
 	if currentNode.begins_with("reload_end"):
 		anim_tree["parameters/StateMachine/conditions/reload"] = false
-	
+		
 	prevNode = currentNode	
 	
 		
