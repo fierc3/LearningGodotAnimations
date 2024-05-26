@@ -43,10 +43,7 @@ func _unhandled_input(event):
 		spring_arm_pivot.rotate_y(-event.relative.x * 0.002)
 		spring_arm.rotate_x(-event.relative.y * 0.002)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/4)
-		
-	if Input.is_action_just_pressed("shoot"):
-		print("Shot")
-		
+				
 	# Crouch Handeling
 	if Input.is_action_just_pressed("crouch") and can_crouch:
 		if !is_crouching:

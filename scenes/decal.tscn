@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2qundigepjck"]
+
+[ext_resource type="Texture2D" uid="uid://bvrfhnnxk0gq3" path="res://assets/decals/bulletHole.png" id="1_dva06"]
+[ext_resource type="Script" path="res://scenes/decal.gd" id="1_g7p83"]
+
+[node name="Decal" type="Decal"]
+size = Vector3(0.05, 0.05, 0.05)
+texture_albedo = ExtResource("1_dva06")
+script = ExtResource("1_g7p83")
+lifetime = 10.0
+size_variation = 1.2
+rotation_variation_degrees = 180.0

@@ -1,10 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://cpfg7arry4lud"]
+[gd_scene load_steps=19 format=3 uid="uid://cpfg7arry4lud"]
 
 [ext_resource type="PackedScene" uid="uid://di270l2f855i4" path="res://assets/fpshands.glb" id="1_4em5v"]
 [ext_resource type="Script" path="res://scenes/fpshands.gd" id="2_u5quy"]
 [ext_resource type="AnimationLibrary" uid="uid://cyl8lndh40y20" path="res://assets/fpshands_idle.glb" id="3_kr72q"]
 [ext_resource type="Script" path="res://scenes/FpsHandAnimationTree.gd" id="4_y4q81"]
 [ext_resource type="Script" path="res://scripts/sway.gd" id="5_3nta8"]
+[ext_resource type="Script" path="res://scenes/shoot.gd" id="6_72oex"]
+[ext_resource type="PackedScene" uid="uid://b2qundigepjck" path="res://scenes/decal.tscn" id="7_kq4is"]
 
 [sub_resource type="Animation" id="Animation_d6liy"]
 resource_name = "Animation"
@@ -260,3 +262,8 @@ script = ExtResource("4_y4q81")
 script = ExtResource("5_3nta8")
 swing_speed = 10.0
 correction = 0.42
+
+[node name="Shooter" type="Node3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0032272, 1.39228, 0)
+script = ExtResource("6_72oex")
+decay_scene = ExtResource("7_kq4is")
