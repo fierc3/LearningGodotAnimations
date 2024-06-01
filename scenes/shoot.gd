@@ -60,7 +60,6 @@ func shoot() -> void:
 	var result = space_state.intersect_ray(params)
 
 	if result:	
-		debugger_instance.spawn_cube(result.position, self, Color.PINK)
 		create_decay(result.position, result.normal)
 
 # Function to create decay at the hit location

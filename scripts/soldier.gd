@@ -42,7 +42,8 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		spring_arm_pivot.rotate_y(-event.relative.x * 0.002)
 		spring_arm.rotate_x(-event.relative.y * 0.002)
-		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/4)
+		var clamperDivider = 2 if camBehaviour == CameraBehaviour.Follow else 4
+		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/clamperDivider, PI/clamperDivider)
 				
 	# Crouch Handeling
 	if Input.is_action_just_pressed("crouch") and can_crouch:
