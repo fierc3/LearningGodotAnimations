@@ -59,6 +59,7 @@ func _unhandled_input(event):
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
+	Global.WEAPON_CAMERA = $SprintArmPivot/SpringArm3D/WeaponCamera
 
 func _physics_process(delta):
 	# Add the gravity.

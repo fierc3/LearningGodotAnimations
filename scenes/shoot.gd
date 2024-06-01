@@ -20,6 +20,10 @@ var original_arms_transform: Transform3D
 # Reference to the player node
 @onready var player: CharacterBody3D = get_tree().get_nodes_in_group("player")[0]
 
+var debugger = preload("res://scripts/debugger.gd")
+
+var debugger_instance: Debugger
+
 func _ready():
 	# Get references to the arms and gun nodes
 	original_arms_position = $"../arms_root".global_transform.origin
@@ -29,6 +33,8 @@ func _ready():
 	previous_position = $".".global_position
 	original_gun_transform = gun_node.transform
 	original_arms_transform = arms_node.transform
+	debugger_instance = debugger.new()
+	get_tree().get_root().add_child(debugger_instance)
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("shoot"):
@@ -41,17 +47,20 @@ func shoot() -> void:
 		return
 		
 	kickback()
+		
 	var ray_origin = self.global_transform.origin
-	var ray_direction = self.global_transform.basis.z * raycast_length
-	
+	var ray_direction = -Global.WEAPON_CAMERA.global_transform.basis.z.normalized()
+		
 	var space_state = get_world_3d().direct_space_state
 	var params = PhysicsRayQueryParameters3D.new()
 	params.from = ray_origin
-	params.to = ray_direction
+	params.to = ray_origin + ray_direction * 20
 	params.exclude = []
+	
 	var result = space_state.intersect_ray(params)
 
 	if result:	
+		debugger_instance.spawn_cube(result.position, self, Color.PINK)
 		create_decay(result.position, result.normal)
 
 # Function to create decay at the hit location
@@ -64,7 +73,6 @@ func create_decay(position: Vector3, normal: Vector3) -> void:
 
 # Function to handle gun kickback effect
 func kickback():
-	print("kickback")
 	
 	#arms.transform.origin.y = original_arms_position.y + kickback_swing
 	#gun.transform.origin.y = original_gun_transform_position.y + kickback_swing
@@ -83,9 +91,8 @@ func kickback():
 	# return
 	arm_tween.tween_property(arms_node, "transform", original_arms_transform, 0.2)
 	gun_tween.tween_property(gun_node, "transform", original_gun_transform, 0.2)
-	arm_tween.tween_callback(kickback_callback)
+	#arm_tween.tween_callback(kickback_callback)
 	arm_tween.play()
 
-func kickback_callback():
-	print("callback")
-
+#func kickback_callback():
+	#print("callback")

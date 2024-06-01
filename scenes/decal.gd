@@ -5,8 +5,6 @@ extends Decal
 @export var rotation_variation_degrees: float = 10.0
 
 func _ready() -> void:
-	print("decay spawned")
-	
 	# Randomize size
 	var size_random_factor = randf_range(0.8, 1.2)
 	size *= size_random_factor
