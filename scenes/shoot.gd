@@ -80,7 +80,8 @@ func kickback():
 	
 	var gun_transform = gun_node.transform.rotated_local(Vector3.LEFT, gunSwing)
 	var arm_transform = arms_node.transform.rotated_local(Vector3.LEFT, armSwing)
-	arm_transform.origin.z += 0.15
+	arm_transform.origin.z += 0.02
+	gun_transform.origin.z -= 0.1
 	
 	var arm_tween = create_tween()
 	var gun_tween = create_tween()
