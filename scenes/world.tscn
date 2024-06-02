@@ -93,4 +93,13 @@ mesh = SubResource("BoxMesh_atgf8")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wg55a")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D2"]
+transform = Transform3D(1, 0, 0, 0, 4.31118, 0, 0, 0, 12.168, -2.51111, 0.911707, 5.46102)
+mesh = SubResource("BoxMesh_atgf8")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2/MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/MeshInstance3D2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_wg55a")
+
 [node name="Soldier" parent="." instance=ExtResource("1_x0pb1")]
