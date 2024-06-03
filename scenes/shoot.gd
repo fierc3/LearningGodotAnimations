@@ -19,10 +19,7 @@ var original_arms_transform: Transform3D
 @export var kickback_swing: float = 1
 # Reference to the player node
 @onready var player: CharacterBody3D = get_tree().get_nodes_in_group("player")[0]
-
-var debugger = preload("res://scripts/debugger.gd")
-
-var debugger_instance: Debugger
+@onready var muzzle_flash: GPUParticles3D = $"../gunrig/Node3D/GPUParticles3D"
 
 func _ready():
 	# Get references to the arms and gun nodes
@@ -33,8 +30,6 @@ func _ready():
 	previous_position = $".".global_position
 	original_gun_transform = gun_node.transform
 	original_arms_transform = arms_node.transform
-	debugger_instance = debugger.new()
-	get_tree().get_root().add_child(debugger_instance)
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("shoot"):
@@ -45,7 +40,9 @@ func shoot() -> void:
 	if currentNode.begins_with("reload"):
 		print("can't shoot during reload")
 		return
-		
+	print("muzzle")
+	print(muzzle_flash)
+	muzzle_flash.emitting = true
 	kickback()
 		
 	var ray_origin = self.global_transform.origin

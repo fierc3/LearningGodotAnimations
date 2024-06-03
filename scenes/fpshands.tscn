@@ -1,16 +1,42 @@
-[gd_scene load_steps=21 format=3 uid="uid://cpfg7arry4lud"]
+[gd_scene load_steps=26 format=3 uid="uid://cpfg7arry4lud"]
 
 [ext_resource type="PackedScene" uid="uid://di270l2f855i4" path="res://assets/fpshands.glb" id="1_4em5v"]
 [ext_resource type="Script" path="res://scenes/fpshands.gd" id="2_u5quy"]
+[ext_resource type="Texture2D" uid="uid://tpupam15oaf4" path="res://assets/particle/muzzle_flash_fire.png" id="3_ba4pw"]
 [ext_resource type="AnimationLibrary" uid="uid://cyl8lndh40y20" path="res://assets/fpshands_idle.glb" id="3_kr72q"]
+[ext_resource type="Material" uid="uid://cr704mnh7viqy" path="res://materials/ammoIndicator.material" id="3_yoocf"]
 [ext_resource type="Script" path="res://scenes/FpsHandAnimationTree.gd" id="4_y4q81"]
 [ext_resource type="Script" path="res://scripts/sway.gd" id="5_3nta8"]
 [ext_resource type="Script" path="res://scenes/shoot.gd" id="6_72oex"]
 [ext_resource type="PackedScene" uid="uid://b2qundigepjck" path="res://scenes/decal.tscn" id="7_kq4is"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_iw5yc"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arm7y"]
+albedo_color = Color(0.0747847, 0.0177867, 0.0106325, 1)
+metallic = 0.71
+metallic_specular = 0.85
+roughness = 0.29
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_yhr1l"]
+[sub_resource type="BoxMesh" id="BoxMesh_5t4sc"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_m6sxu"]
+angle_min = -360.0
+angle_max = 360.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bimky"]
+transparency = 4
+blend_mode = 1
+albedo_texture = ExtResource("3_ba4pw")
+emission_enabled = true
+emission = Color(0.901961, 0.396078, 0, 1)
+emission_energy_multiplier = 3.94
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_qluht"]
+material = SubResource("StandardMaterial3D_bimky")
+size = Vector2(0.2, 0.2)
 
 [sub_resource type="Animation" id="Animation_d6liy"]
 resource_name = "Animation"
@@ -246,22 +272,84 @@ bones/1/rotation = Quaternion(-0.714346, -3.12898e-08, 0.0214086, 0.699465)
 bones/1/scale = Vector3(1, 1, 1)
 
 [node name="Malorian_001" parent="gunrig/Skeleton3D" index="0"]
-transform = Transform3D(1, 5.58794e-09, -1.45519e-11, -5.58794e-09, 1, -9.31323e-10, -7.27596e-12, 4.65661e-10, 1, 0, 0, 0)
+transform = Transform3D(1, 3.72529e-09, -1.45517e-11, -3.72529e-09, 1, -9.31323e-10, -7.27607e-12, 4.65661e-10, 1, 0, 0, 0)
 layers = 2
 
 [node name="Malorian" parent="gunrig/Skeleton3D" index="1"]
-transform = Transform3D(1, 1.86265e-09, 0, -1.86265e-09, 1, -2.32831e-10, 0, 2.32831e-10, 1, 0, 0, 0)
+transform = Transform3D(1, 1.86265e-09, 1.55431e-15, -1.86265e-09, 1, -2.3282e-10, 8.88178e-16, 2.32831e-10, 1, -0.00160766, -0.00145483, 0.00191307)
 layers = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_arm7y")
+
+[node name="AmmoIndicator" type="MeshInstance3D" parent="gunrig/Skeleton3D/Malorian" index="0"]
+transform = Transform3D(0.0468261, 1.11759e-08, -7.78655e-13, 3.49246e-10, 0.372706, -3.73699e-11, -3.40516e-13, 8.67768e-11, 0.0535008, 0.646799, 0.581579, 0.39819)
+layers = 2
+mesh = SubResource("BoxMesh_5t4sc")
+skeleton = NodePath("../../Malorian_001")
+surface_material_override/0 = ExtResource("3_yoocf")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="gunrig/Skeleton3D/Malorian/AmmoIndicator" index="0"]
+transform = Transform3D(1, 2.87864e-10, 3.70509e-15, -2.87864e-10, 1, 0, -3.70509e-15, -1.06656e-24, 1, 0.867258, 0.0491552, 0.188583)
+layers = 3
+light_color = Color(0.0777346, 0.915894, 1, 1)
+light_energy = 0.05
+light_indirect_energy = 3.166
+light_volumetric_fog_energy = 2.053
+light_size = 0.001
+light_specular = 2.666
+omni_range = 0.046
+omni_attenuation = 1.36604
+
+[node name="AmmoIndicator2" type="MeshInstance3D" parent="gunrig/Skeleton3D/Malorian" index="1"]
+transform = Transform3D(0.0468261, 1.11759e-08, -7.78655e-13, 3.49246e-10, 0.372706, -3.73699e-11, -3.40502e-13, 8.67768e-11, 0.0535008, 0.646799, 0.581579, 0.496717)
+layers = 2
+mesh = SubResource("BoxMesh_5t4sc")
+skeleton = NodePath("../../Malorian_001")
+surface_material_override/0 = ExtResource("3_yoocf")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="gunrig/Skeleton3D/Malorian/AmmoIndicator2" index="0"]
+transform = Transform3D(1, 2.87864e-10, 3.70509e-15, -2.87864e-10, 1, 0, -3.70509e-15, -1.06656e-24, 1, 0.867258, 0.0491552, 0.188583)
+layers = 3
+light_color = Color(0.0777346, 0.915894, 1, 1)
+light_energy = 0.05
+light_indirect_energy = 3.166
+light_volumetric_fog_energy = 2.053
+light_size = 0.001
+light_specular = 2.666
+omni_range = 0.046
+omni_attenuation = 1.36604
+
+[node name="AmmoIndicator3" type="MeshInstance3D" parent="gunrig/Skeleton3D/Malorian" index="2"]
+transform = Transform3D(0.0468261, 1.11759e-08, -7.78655e-13, 3.49246e-10, 0.372706, -3.73699e-11, -3.40502e-13, 8.67768e-11, 0.0535008, 0.646799, 0.581579, 0.597489)
+layers = 2
+mesh = SubResource("BoxMesh_5t4sc")
+skeleton = NodePath("../../Malorian_001")
+surface_material_override/0 = ExtResource("3_yoocf")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="gunrig/Skeleton3D/Malorian/AmmoIndicator3" index="0"]
+transform = Transform3D(1, 5.75729e-10, 3.77369e-15, -5.75729e-10, 1, 0, -3.77369e-15, -2.17262e-24, 1, 0.867258, 0.0491552, 0.188583)
+layers = 3
+light_color = Color(0.0777346, 0.915894, 1, 1)
+light_energy = 0.05
+light_indirect_energy = 3.166
+light_volumetric_fog_energy = 2.053
+light_size = 0.001
+light_specular = 2.666
+omni_range = 0.046
+omni_attenuation = 1.36604
 
 [node name="Node3D" type="Node3D" parent="gunrig" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.504523, 2.84969, 0.415983)
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="gunrig/Node3D" index="0"]
-transform = Transform3D(0.696134, -3.72529e-09, 1.66533e-16, -9.31323e-09, 0.962585, -1.77636e-15, 4.44089e-16, -1.06581e-14, 0.355116, 0, 0, 0)
+transform = Transform3D(0.696134, -1.86265e-09, 3.88578e-16, -9.31323e-09, 0.962585, -1.77636e-15, 4.44089e-16, -1.06581e-14, 0.355116, -0.00767004, 0.274584, 0)
+emitting = false
+amount = 5
 sub_emitter = NodePath(".")
-visibility_aabb = AABB(-4, -2.09697, -4, 8, 4.19393, 8)
-process_material = SubResource("ShaderMaterial_iw5yc")
-draw_pass_1 = SubResource("ArrayMesh_yhr1l")
+lifetime = 0.05
+one_shot = true
+visibility_aabb = AABB(-4, -1.66777, -4, 8, 4.19393, 8)
+process_material = SubResource("ParticleProcessMaterial_m6sxu")
+draw_pass_1 = SubResource("QuadMesh_qluht")
 
 [node name="AnimationPlayer" parent="." index="2"]
 libraries = {
