@@ -7,10 +7,6 @@ extends Node3D
 func _ready():
 	anim_tree.active = true	
 
-func _unhandled_input(event):
-	if Input.is_action_just_pressed("reload"):
-		play_reload_animation()
-
 var prevNode = null
 
 func _process(delta):
@@ -29,3 +25,7 @@ func _process(delta):
 func play_reload_animation(): 
 	print("playing ani")
 	anim_tree["parameters/StateMachine/conditions/reload"] = true
+
+
+func _on_shooter_reload_requested():
+	play_reload_animation()

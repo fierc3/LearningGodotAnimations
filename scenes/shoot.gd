@@ -17,9 +17,19 @@ var original_arms_transform: Transform3D
 
 @export var correction: float = 0.42
 @export var kickback_swing: float = 1
+
+# Bullets
+@export var max_bullets: int = 3;
+@export var current_bullets = 3;
+
 # Reference to the player node
 @onready var player: CharacterBody3D = get_tree().get_nodes_in_group("player")[0]
 @onready var muzzle_flash: GPUParticles3D = $"../gunrig/Node3D/GPUParticles3D"
+
+signal reload_requested
+signal current_bullet_changed(count:int)
+
+var fireCooldown = false
 
 func _ready():
 	# Get references to the arms and gun nodes
@@ -30,20 +40,45 @@ func _ready():
 	previous_position = $".".global_position
 	original_gun_transform = gun_node.transform
 	original_arms_transform = arms_node.transform
+	
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
+	
+	if Input.is_action_just_pressed("reload") and current_bullets != max_bullets:
+		print("reload pressed")
+		reload_requested.emit()
+#		play_reload_animation()
 
 func shoot() -> void:
+	
+	if fireCooldown:
+		print("shooting is on cooldown")
+		return
+	
 	var currentNode = anim_state_machine.get_current_node()
+	
+	if current_bullets < 1:
+		print("no bullets left!!!")
+		return
+	
 	if currentNode.begins_with("reload"):
 		print("can't shoot during reload")
 		return
+	
+	fireCooldown = true
+	Global.start_timer(resetCooldown, 0.3)
+	
+		
 	print("muzzle")
 	print(muzzle_flash)
 	muzzle_flash.emitting = true
 	kickback()
+	
+	# Reduce 1 bullet
+	current_bullets = current_bullets - 1
+	current_bullet_changed.emit(current_bullets)
 		
 	var ray_origin = self.global_transform.origin
 	var ray_direction = -Global.WEAPON_CAMERA.global_transform.basis.z.normalized()
@@ -93,3 +128,15 @@ func kickback():
 
 #func kickback_callback():
 	#print("callback")
+	
+func resetCooldown():
+	fireCooldown = false
+
+
+func _on_animation_tree_animation_finished(anim_name):
+	var state = anim_state_machine.get_current_node();
+	print("state: " + state)
+	if state == "reload_end":
+		current_bullets = max_bullets
+		current_bullet_changed.emit(current_bullets)
+		

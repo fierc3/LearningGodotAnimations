@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cpfg7arry4lud"]
+[gd_scene load_steps=28 format=3 uid="uid://cpfg7arry4lud"]
 
 [ext_resource type="PackedScene" uid="uid://di270l2f855i4" path="res://assets/fpshands.glb" id="1_4em5v"]
 [ext_resource type="Script" path="res://scenes/fpshands.gd" id="2_u5quy"]
@@ -8,7 +8,9 @@
 [ext_resource type="Script" path="res://scenes/FpsHandAnimationTree.gd" id="4_y4q81"]
 [ext_resource type="Script" path="res://scripts/sway.gd" id="5_3nta8"]
 [ext_resource type="Script" path="res://scenes/shoot.gd" id="6_72oex"]
+[ext_resource type="Script" path="res://scenes/AnimationPlayer.gd" id="6_qc6c8"]
 [ext_resource type="PackedScene" uid="uid://b2qundigepjck" path="res://scenes/decal.tscn" id="7_kq4is"]
+[ext_resource type="Script" path="res://scenes/AmmoInidcatorUpdater.gd" id="11_n0c07"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arm7y"]
 albedo_color = Color(0.0747847, 0.0177867, 0.0106325, 1)
@@ -195,7 +197,7 @@ states/reload_end/position = Vector2(549, 178)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_ut4yq"), "idle", "reload", SubResource("AnimationNodeStateMachineTransition_2ja7e"), "reload", "reload_end", SubResource("AnimationNodeStateMachineTransition_2w2cu"), "reload_end", "idle", SubResource("AnimationNodeStateMachineTransition_vgmcl")]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_1bnu3"]
-graph_offset = Vector2(-505.322, -129.944)
+graph_offset = Vector2(-698.482, -159.717)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_hkym8")
 nodes/StateMachine/position = Vector2(-260, -60)
 nodes/output/position = Vector2(600, 0)
@@ -342,6 +344,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.504523, 2.84969, 0.415983)
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="gunrig/Node3D" index="0"]
 transform = Transform3D(0.696134, -1.86265e-09, 3.88578e-16, -9.31323e-09, 0.962585, -1.77636e-15, 4.44089e-16, -1.06581e-14, 0.355116, -0.00767004, 0.274584, 0)
+cast_shadow = 0
 emitting = false
 amount = 5
 sub_emitter = NodePath(".")
@@ -356,6 +359,7 @@ libraries = {
 "": SubResource("AnimationLibrary_u7l2t"),
 "fpshands_idle": ExtResource("3_kr72q")
 }
+script = ExtResource("6_qc6c8")
 
 [node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer" index="0"]
 root_node = NodePath("../..")
@@ -374,3 +378,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0032272, 1.39228, 0)
 script = ExtResource("6_72oex")
 decay_scene = ExtResource("7_kq4is")
 kickback_swing = 0.01
+
+[node name="AmmoInidcatorUpdater" type="Node3D" parent="." index="5"]
+script = ExtResource("11_n0c07")
+
+[connection signal="animation_finished" from="AnimationPlayer/AnimationTree" to="Shooter" method="_on_animation_tree_animation_finished"]
+[connection signal="current_bullet_changed" from="Shooter" to="AmmoInidcatorUpdater" method="_on_shooter_current_bullet_changed"]
+[connection signal="reload_requested" from="Shooter" to="." method="_on_shooter_reload_requested"]
