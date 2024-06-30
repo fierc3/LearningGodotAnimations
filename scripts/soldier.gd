@@ -38,7 +38,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
-		
+	
 	if event is InputEventMouseMotion:
 		spring_arm_pivot.rotate_y(-event.relative.x * 0.002)
 		spring_arm.rotate_x(-event.relative.y * 0.002)
@@ -46,18 +46,21 @@ func _unhandled_input(event):
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/clamperDivider, PI/clamperDivider)
 				
 	# Crouch Handeling
-	if Input.is_action_just_pressed("crouch") and can_crouch:
+	if Input.is_action_just_pressed("crouch") and can_crouch and is_on_floor():
 		if !is_crouching:
 			start_crouch()
 	if Input.is_action_just_released("crouch") and is_crouching:
 		stop_crouch()
 	
-		# Crouch Handeling
+	# Shift Handeling
 	if Input.is_action_just_pressed("shift"):
 		is_shifting = true
 	if Input.is_action_just_released("shift"):
 		is_shifting = false
-
+	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		jump()
+	
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
 	Global.WEAPON_CAMERA = $SprintArmPivot/SpringArm3D/WeaponCamera
@@ -120,12 +123,8 @@ func stop_crouch():
 	new_transform.origin.y = 0
 	spring_arm_pivot.transform = new_transform
 
-func update_crouch(delta):
-	if crouch_timer > 0:
-		crouch_timer -= delta
-	if crouch_timer <= 0:
-		can_crouch = true
-
+func jump():
+	velocity.y = JUMP_VELOCITY
 
 enum CameraBehaviour {
 	Follow,
