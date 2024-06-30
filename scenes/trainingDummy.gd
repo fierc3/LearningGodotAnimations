@@ -37,9 +37,9 @@ func _hit(target):
 	var targetId = target.collider.get_rid()	
 	if bodyId == targetId:
 		print("bodyshot")
-		health =- 100
+		health -= 48
 	elif headId == targetId:
-		health =- 48
+		health -= 100
 		print("headshot")
 
 

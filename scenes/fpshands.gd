@@ -9,7 +9,7 @@ func _ready():
 
 var prevNode = null
 
-func _process(delta):
+func _process(_delta):
 	var currentNode = anim_state_machine.get_current_node()
 		
 	if(prevNode == null):

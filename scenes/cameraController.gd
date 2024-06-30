@@ -9,7 +9,7 @@ func _ready():
 	#player_hands.visible = true
 	near = 0.1  # Adjust the near clip plane to prevent clipping
 
-func _process(delta):
+func _process(_delta):
 	sync_weapon_camera()
 
 func sync_weapon_camera():
