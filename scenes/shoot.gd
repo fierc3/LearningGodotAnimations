@@ -70,9 +70,7 @@ func shoot() -> void:
 	fireCooldown = true
 	Global.start_timer(resetCooldown, 0.3)
 	
-		
-	print("muzzle")
-	print(muzzle_flash)
+	# Muzzle
 	muzzle_flash.emitting = true
 	kickback()
 	
@@ -93,6 +91,7 @@ func shoot() -> void:
 
 	if result:	
 		create_decay(result.position, result.normal)
+		Global.emit_signal("hit_player", result)
 
 # Function to create decay at the hit location
 func create_decay(position: Vector3, normal: Vector3) -> void:
@@ -125,9 +124,6 @@ func kickback():
 	gun_tween.tween_property(gun_node, "transform", original_gun_transform, 0.2)
 	#arm_tween.tween_callback(kickback_callback)
 	arm_tween.play()
-
-#func kickback_callback():
-	#print("callback")
 	
 func resetCooldown():
 	fireCooldown = false

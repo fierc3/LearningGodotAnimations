@@ -23,7 +23,6 @@ func _process(delta):
 	
 		
 func play_reload_animation(): 
-	print("playing ani")
 	anim_tree["parameters/StateMachine/conditions/reload"] = true
 
 

@@ -19,7 +19,6 @@ func _process(delta):
 
 
 func _on_shooter_current_bullet_changed(count):
-	print("bullet changed")
 	var empty = 3 - count
 	var indicators: Array[MeshInstance3D] = [indicator1, indicator2, indicator3]
 

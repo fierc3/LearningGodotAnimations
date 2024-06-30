@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://do3q0n23tngpj"]
+[gd_scene load_steps=16 format=3 uid="uid://do3q0n23tngpj"]
 
 [ext_resource type="PackedScene" uid="uid://ubcpe2rfjfqj" path="res://scenes/player.tscn" id="1_x0pb1"]
+[ext_resource type="PackedScene" uid="uid://bkyp6wgxtg1yo" path="res://scenes/trainingDummy.tscn" id="2_qgbdq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dp6bu"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -52,80 +53,91 @@ environment = SubResource("Environment_vrw0q")
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Ground" type="MeshInstance3D" parent="."]
+[node name="Soldier" parent="." instance=ExtResource("1_x0pb1")]
+
+[node name="Env" type="Node" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Env"]
 mesh = SubResource("PlaneMesh_3yxy5")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_dus0p")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/Ground"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/Ground/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_0ixil")
 
-[node name="MidRamp" type="MeshInstance3D" parent="."]
+[node name="MidRamp" type="MeshInstance3D" parent="Env"]
 transform = Transform3D(5.36551, 0, 0, 0, 2.14215, 0, 0, 0, 5.36551, 6.44939, 0.894703, -1.35487)
 mesh = SubResource("PrismMesh_b5gk4")
+skeleton = NodePath("../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MidRamp"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/MidRamp"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MidRamp/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/MidRamp/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_kobyo")
 
-[node name="LowRamp" type="MeshInstance3D" parent="."]
+[node name="LowRamp" type="MeshInstance3D" parent="Env"]
 transform = Transform3D(5.36551, 0, 0, 0, 1.30941, 0, 0, 0, 5.36551, 6.44939, 0.653251, 4.85466)
 mesh = SubResource("PrismMesh_b5gk4")
+skeleton = NodePath("../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="LowRamp"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/LowRamp"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LowRamp/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/LowRamp/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_kobyo")
 
-[node name="HighRamp" type="MeshInstance3D" parent="."]
+[node name="HighRamp" type="MeshInstance3D" parent="Env"]
 transform = Transform3D(5.36551, 0, 0, 0, 4.06137, 0, 0, 0, 5.36551, 6.44939, 1.86444, -7.85785)
 mesh = SubResource("PrismMesh_b5gk4")
+skeleton = NodePath("../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="HighRamp"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/HighRamp"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HighRamp/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/HighRamp/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_kobyo")
 
-[node name="Jumpable" type="MeshInstance3D" parent="."]
+[node name="Jumpable" type="MeshInstance3D" parent="Env"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.75768, -0.119131, 0)
 mesh = SubResource("BoxMesh_atgf8")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_i74vx")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Jumpable"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/Jumpable"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Jumpable/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/Jumpable/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wg55a")
 
-[node name="Unreachable" type="MeshInstance3D" parent="."]
+[node name="Unreachable" type="MeshInstance3D" parent="Env"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2966, 0.911707, -1.94721)
 mesh = SubResource("BoxMesh_atgf8")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_ipjsp")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Unreachable"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/Unreachable"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Unreachable/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/Unreachable/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wg55a")
 
-[node name="Walkable" type="MeshInstance3D" parent="Unreachable"]
+[node name="Walkable" type="MeshInstance3D" parent="Env/Unreachable"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.46108, -1.23889, 3.84615)
 mesh = SubResource("BoxMesh_atgf8")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_ur13h")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Unreachable/Walkable"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/Unreachable/Walkable"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Unreachable/Walkable/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/Unreachable/Walkable/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wg55a")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Unreachable"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Env/Unreachable"]
 transform = Transform3D(1, 0, 0, 0, 4.31118, 0, 0, 0, 12.168, -2.51111, 0.911707, 5.46102)
 mesh = SubResource("BoxMesh_atgf8")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Unreachable/MeshInstance3D2"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Env/Unreachable/MeshInstance3D2"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Unreachable/MeshInstance3D2/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Env/Unreachable/MeshInstance3D2/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wg55a")
 
-[node name="Soldier" parent="." instance=ExtResource("1_x0pb1")]
+[node name="TrainingDummy" parent="." instance=ExtResource("2_qgbdq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7334, 0, -5.83412)
