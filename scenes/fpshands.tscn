@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cpfg7arry4lud"]
+[gd_scene load_steps=27 format=3 uid="uid://cpfg7arry4lud"]
 
 [ext_resource type="PackedScene" uid="uid://di270l2f855i4" path="res://assets/fpshands.glb" id="1_4em5v"]
 [ext_resource type="Script" path="res://scenes/fpshands.gd" id="2_u5quy"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://scenes/FpsHandAnimationTree.gd" id="4_y4q81"]
 [ext_resource type="Script" path="res://scripts/sway.gd" id="5_3nta8"]
 [ext_resource type="Script" path="res://scenes/shoot.gd" id="6_72oex"]
-[ext_resource type="Script" path="res://scenes/AnimationPlayer.gd" id="6_qc6c8"]
 [ext_resource type="PackedScene" uid="uid://b2qundigepjck" path="res://scenes/decal.tscn" id="7_kq4is"]
 [ext_resource type="Script" path="res://scenes/AmmoInidcatorUpdater.gd" id="11_n0c07"]
 
@@ -359,7 +358,6 @@ libraries = {
 "": SubResource("AnimationLibrary_u7l2t"),
 "fpshands_idle": ExtResource("3_kr72q")
 }
-script = ExtResource("6_qc6c8")
 
 [node name="AnimationTree" type="AnimationTree" parent="AnimationPlayer" index="0"]
 root_node = NodePath("../..")

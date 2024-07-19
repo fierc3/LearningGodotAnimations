@@ -4,6 +4,8 @@ extends CharacterBody3D
 @onready var spring_arm_pivot = $SprintArmPivot
 @onready var spring_arm = $SprintArmPivot/SpringArm3D
 @onready var animation_tree = $AnimationTree
+@onready var collision_shape = $CollisionShape3D
+@onready var raycast: RayCast3D = $RayCast3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -49,7 +51,7 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("crouch") and can_crouch and is_on_floor():
 		if !is_crouching:
 			start_crouch()
-	if Input.is_action_just_released("crouch") and is_crouching:
+	if !Input.is_action_pressed("crouch") and is_crouching and !raycast.is_colliding():
 		stop_crouch()
 	
 	# Shift Handeling
@@ -65,8 +67,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
 	Global.WEAPON_CAMERA = $SprintArmPivot/SpringArm3D/WeaponCamera
 
-func _physics_process(delta):
-	# Add the gravity.
+func _physics_process(delta):	
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
@@ -112,16 +113,18 @@ func updateFollowCam():
 	
 func start_crouch():
 	is_crouching = true
-	var new_transform = spring_arm_pivot.transform
-	new_transform.origin.y = -0.8
-	spring_arm_pivot.transform = new_transform
+	#var new_transform = spring_arm_pivot.transform
+	#new_transform.origin.y = -0.8
+	#spring_arm_pivot.transform = new_transform
+	collision_shape.scale.y = 0.5
 
 	
 func stop_crouch():
 	is_crouching = false
-	var new_transform = spring_arm_pivot.transform
-	new_transform.origin.y = 0
-	spring_arm_pivot.transform = new_transform
+	#var new_transform = spring_arm_pivot.transform
+	#new_transform.origin.y = 0
+	#spring_arm_pivot.transform = new_transform
+	collision_shape.scale.y = 1
 
 func jump():
 	velocity.y = JUMP_VELOCITY
